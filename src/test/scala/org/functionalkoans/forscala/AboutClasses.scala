@@ -11,18 +11,20 @@ class AboutClasses extends KoanSuite {
 
   koan("val parameters in class definition define getter") {
     val aClass = new ClassWithValParameter("name goes here")
-    aClass.name should be(__)
+    aClass.name should be("name goes here")
   }
 
+  // Implicitly?  Interesting
   koan("var parameters in class definition define getter and setter") {
     val aClass = new ClassWithVarParameter("description goes here")
-    aClass.description should be(__)
+    aClass.description should be("description goes here")
 
     aClass.description = "new description"
-    aClass.description should be(__)
+    aClass.description should be("new description")
   }
 
   // you can define class with private fields
+  // NOTE the missing val and var
   class ClassWithPrivateFields(name: String)
 
   koan("fields defined internally are private to class") {

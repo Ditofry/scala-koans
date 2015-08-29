@@ -4,17 +4,20 @@ import support.KoanSuite
 
 class AboutConstructors extends KoanSuite {
 
+  // wtf, there is too much black magic going on here...
+  // I need to do more research on this
   class AboutConstructorWithAuxiliaryConstructor(val name: String) {
     // invoke auxiliary constructor
     def this() {
       // what happens if you comment out the following line?
+      // compile error ^
       this ("defaultname")
     }
   }
 
   koan("Primary constructor specified with a parameter requires that parameter to be passed in") {
     val aboutMe = new AboutConstructorWithAuxiliaryConstructor()
-    aboutMe.name should be (__)
+    aboutMe.name should be ("defaultname")
   }
 
   class AboutClassWithNoClassParameter
