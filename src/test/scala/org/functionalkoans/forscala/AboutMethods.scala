@@ -8,12 +8,12 @@ class AboutMethods extends KoanSuite {
 
   koan( """A method's last statement will be what is returned
           | There is no need for the keyword `return`.
-          | When a method includes a `=` after the method declaration that
+          | When a method includes an `=` after the method declaration that
           | will infer the return type""") {
     def add(x: Int, y: Int) = {
       x + y
     }
-    add(6, 7) should be(__)
+    add(6, 7) should be(13)
   }
 
   koan(
@@ -23,7 +23,7 @@ class AboutMethods extends KoanSuite {
       //Notice the :Int at the end of the method
       x + y
     }
-    add(2, 10) should be(__)
+    add(2, 10) should be(12)
   }
 
 
@@ -39,14 +39,15 @@ class AboutMethods extends KoanSuite {
       else x + y
     }
 
-    add(2, 10) should be(__)
-    add(1, 1) should be(__)
+    // The point here being that one would expect "12" and not 12
+    add(2, 10) should be(12)
+    add(1, 1) should be(2)
   }
 
 
   koan( """If a method does not of have equal it is considered `Unit` which is analogous to `void` in Java""") {
     def foo(x: Int) { //Note: No `=`
-      (x + 4) should be(__)
+      (x + 4) should be(9)
     }
     foo(5)
   }
@@ -54,20 +55,22 @@ class AboutMethods extends KoanSuite {
   koan(
     """If you want to have an = on the method, while still explicitly returning Unit you can make the return type `Unit`,
       | this also analogous to `void""") {
+    // Syntax/Style choice
     def foo(x: Int): Unit = { //Note we are declaring Unit
-      (x + 4) should be(__)
+      (x + 4) should be(7)
     }
     foo(3)
   }
 
   koan( """Once you have an =, it is understood that there will be a return type and can be inferred""") {
+    // And apparently curlies are optional at least for one-liners
     def foo(x: Int) = 3 + 4
-    foo(3).isInstanceOf[Int] should be(__) //.isInstanceOf[...] is analogous to Java's instanceOf
+    foo(3).isInstanceOf[Int] should be(true) //.isInstanceOf[...] is analogous to Java's instanceOf
   }
 
   koan( """Of course if you wish to be explicit about the return type, you can attach it at the end of the method""") {
     def foo(x: Int): Int = 3 + 4
-    foo(3).isInstanceOf[Int] should be(__)
+    foo(3).isInstanceOf[Int] should be(true)
   }
 
   koan(
@@ -79,16 +82,21 @@ class AboutMethods extends KoanSuite {
       else x * factorial(x-1)
     }
 
-    factorial(4) should be(__) // List(...) is how a list is created more about lists later.
+    factorial(4) should be(24) // List(...) is how a list is created more about lists later.
 
     //Note: Fire up a REPL and paste factorial(100000)!
   }
 
+
+  /*
+  * I had to read a few of the answers here: http://stackoverflow.com/questions/33923/what-is-tail-recursion
+  * to understand this.  It's pretty cool.  Much more memory efficient.
+  */
   koan(
     """If you want to ensure a method is not only recursive but _tail recursive_,
       | you can get help from the scala compiler to ensure that it is indeed a
       | tail recursive call by
-      | including scala.annotation.tailrec on the method.  When methods are properly tail recursive. The 
+      | including scala.annotation.tailrec on the method.  When methods are properly tail recursive. The
       | Scala compiler will optimize the code from stack recursion into a loop at compile time""") {
 
     import scala.annotation.tailrec //importing annotation!
@@ -104,7 +112,7 @@ class AboutMethods extends KoanSuite {
       fact(i, 1)
     }
 
-    factorial(4) should be(__)
+    factorial(4) should be(24)
 
     //Note: Fire up a REPL and try factorial(100000) now!
   }
@@ -133,7 +141,7 @@ class AboutMethods extends KoanSuite {
 
     class Pennies(val n:Int)
     def doYouHaveAnySpareChange_?() = new Pennies(25)
-    doYouHaveAnySpareChange_?.n should be(__)
+    doYouHaveAnySpareChange_?.n should be(25)
   }
 
   koan(
@@ -148,7 +156,7 @@ class AboutMethods extends KoanSuite {
     }
 
     val probationEmployee = `put employee on probation`(new Employee("Milton", "Waddams", ""))
-    probationEmployee.`employee status` should be (__)
+    probationEmployee.`employee status` should be ("Probation")
   }
 
   koan(
@@ -158,7 +166,10 @@ class AboutMethods extends KoanSuite {
     def add(a:Int, b:Int) = a + b //implied return type of Int!
     def performSideEffect():Unit = System.currentTimeMillis
 
-    add(4,6) should be (__)
+    add(4,6) should be (10)
+
+    // Really weird... how do you reference scala functions as objects if they
+    // invoke without () ???
     performSideEffect() //Notice the parenthesis, since the method we called is Unit!
   }
 
@@ -166,12 +177,13 @@ class AboutMethods extends KoanSuite {
     """Methods with colons are right-associative, that means the object that a method is on will be on
       |the _right_ and the method parameter will be on the _left_""") {
 
+    // This is freaking me out.
     class Foo (y:Int) {
       def ~:(n:Int) = n + y + 3
     }
 
     val foo = new Foo(9)
-    10 ~: foo should be (__)
-    foo.~:(40) should be (__)
+    10 ~: foo should be (22)
+    foo.~:(40) should be (52)
   }
 }
