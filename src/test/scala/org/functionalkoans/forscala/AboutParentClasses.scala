@@ -8,8 +8,8 @@ class AboutParentClasses extends KoanSuite {
     class Employee(override val firstName: String, override val lastName: String,
                    val employeeID: Long) extends Worker(firstName, lastName)
     val me = new Employee("Name", "Yourself", 1233)
-    me.firstName should be(__)
-    me.lastName should be(__)
+    me.firstName should be("Name")
+    me.lastName should be("Yourself")
   }
 
   koan("A class that extends from another is polymorphic") {
@@ -20,10 +20,12 @@ class AboutParentClasses extends KoanSuite {
     val me = new Employee("Name", "Yourself", 1233)
     val worker: Worker = me
 
-    worker.firstName should be(__)
-    worker.lastName should be(__)
+    worker.firstName should be("Name")
+    worker.lastName should be("Yourself")
   }
 
+  // Interesting... an abstract class is simply a class that only exists for the
+  // sake of a design pattern?  i.e. You can't have objects of that class...
   koan("An abstract class, as in Java, cannot be instantiated and only inherited") {
     abstract class Worker(val firstName: String, val lastName: String) {}
 
@@ -43,6 +45,6 @@ class AboutParentClasses extends KoanSuite {
 
     val employee = new Employee("Name", "Yourself", 2291)
     val assignment = new employee.Assignment(22)  //using the employee instance's path, create an assignment for it.
-    assignment.hours should be (__)
+    assignment.hours should be (22)
   }
 }
