@@ -15,29 +15,29 @@ class AboutTraversables extends KoanSuite with ShouldMatchers {
     val set = Set(1, 9, 10, 22)
     val list = List(3, 4, 5, 10)
     val result = set ++ list
-    result.size should be(__)
+    result.size should be(8)
 
     val result2 = list ++ set
-    result2.size should be(__)
+    result2.size should be(8)
   }
 
   koan( """map will apply the given function on all elements of a
           |  Traversable and return a new collection of the result.""") {
     val set = Set(1, 3, 4, 6)
     val result = set.map(_ * 4)
-    result.last should be(__)
+    result.last should be(24)
   }
 
   koan( """flatten will smash all child Traversables within a Traversable""") {
     val list = List(List(1), List(2, 3, 4), List(5, 6, 7), List(8, 9, 10))
-    list.flatten should be(List(__, __, __, __, __, __, __, __, __, __))
+    list.flatten should be(List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10))
   }
 
   koan( """flatMap will not only apply the given function on all elements of a Traversable,
           |  but all elements within the elements and flatten the results""") {
     val list = List(List(1), List(2, 3, 4), List(5, 6, 7), List(8, 9, 10))
     val result = list.flatMap(_.map(_ * 4))
-    result should be(List(__, __, __, __, __, __, __, __, __, __))
+    result should be(List(4, 8, 12, 16, 20, 24, 28, 32, 36, 40))
   }
 
   koan( """flatMap of Options will filter out all Nones and Keep the Somes""") {
