@@ -15,7 +15,7 @@ class AboutTraversables extends KoanSuite with ShouldMatchers {
     val set = Set(1, 9, 10, 22)
     val list = List(3, 4, 5, 10)
     val result = set ++ list
-    result.size should be(8)
+    result.size should be(7)
 
     val result2 = list ++ set
     result2.size should be(8)
@@ -43,7 +43,7 @@ class AboutTraversables extends KoanSuite with ShouldMatchers {
   koan( """flatMap of Options will filter out all Nones and Keep the Somes""") {
     val list = List(1, 2, 3, 4, 5)
     val result = list.flatMap(it => if (it % 2 == 0) Some(it) else None)
-    result should be(List(__, __))
+    result should be(List(2, 4))
   }
 
   koan( """collect will apply a partial function to all elements of a Traversable
@@ -52,7 +52,7 @@ class AboutTraversables extends KoanSuite with ShouldMatchers {
     val result = list.collect {
       case x: Int if (x % 2 == 0) => x * 3
     }
-    result should be(List(__, __, __, __))
+    result should be(List(12, 18, 24, 42))
   }
 
   koan( """collect will apply a partial function to all elements of a Traversable
@@ -66,7 +66,7 @@ class AboutTraversables extends KoanSuite with ShouldMatchers {
       case y: Int if y % 2 != 0 => y * 4
     }
     val result = list.collect(partialFunction1 orElse partialFunction2)
-    result should be(List(__, __, __, __, __, __, __))
+    result should be(List(12, 18, 28, 24, 36, 52, 42))
   }
 
   koan( """foreach will apply a function to all elements of a Traversable, but unlike
@@ -74,7 +74,7 @@ class AboutTraversables extends KoanSuite with ShouldMatchers {
           | is like a void return type in Java, C++""") {
     val list = List(4, 6, 7, 8, 9, 13, 14)
     list.foreach(num => println(num * 4))
-    list should be(List(__, __, __, __, __, __, __))
+    list should be(List(4, 6, 7, 8, 9, 13, 14))
   }
 
   koan( """toArray will convert any Traversable to an Array, which is a special wrapper around a
